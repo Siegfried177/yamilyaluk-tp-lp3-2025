@@ -1,0 +1,15 @@
+2025-09-16 15:04:50.140950-03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PERSONA" not found (this database is empty); SQL statement:
+insert into persona (apellido,fecha_nacimiento,nombre,numero_documento,id) values (?,?,?,?,default) [42104-232]
+2025-09-16 15:06:04.812103-03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PERSONA" not found (this database is empty); SQL statement:
+insert into persona (apellido,fecha_nacimiento,nombre,numero_documento,id) values (?,?,?,?,default) [42104-232]
+2025-09-16 15:06:15.342103-03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PERSONA" not found (this database is empty); SQL statement:
+insert into persona (apellido,fecha_nacimiento,nombre,numero_documento,id) values (?,?,?,?,default) [42104-232]
+2025-09-16 15:08:59.148264-03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PERSONA" not found (this database is empty); SQL statement:
+insert into persona (apellido,fecha_nacimiento,nombre,numero_documento,id) values (?,?,?,?,default) [42104-232]
+2025-09-16 15:12:34.620775-03:00 jdbc[14]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]PERSONA ID"; expected "PREPARE"; SQL statement:
+PERSONA ID [42001-232]
