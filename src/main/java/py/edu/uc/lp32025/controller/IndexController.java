@@ -9,6 +9,6 @@ public class IndexController {
 
     @GetMapping("/")
     public RedirectView redirectToHolaMundo() {
-        return new RedirectView("/HolaMundo");
+        return new RedirectView("/api/personas");
     }
 }

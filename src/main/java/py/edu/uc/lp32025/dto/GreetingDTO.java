@@ -11,7 +11,6 @@ public class GreetingDTO extends BaseDTO {
     public String getSaludo() {
         return saludo;
     }
-
     public void setSaludo(String saludo) {
         this.saludo = saludo;
     }
