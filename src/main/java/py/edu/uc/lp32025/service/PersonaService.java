@@ -81,6 +81,14 @@ public class PersonaService {
         return null; // O lanzar una excepción personalizada (ej. PersonaNoEncontradaException)
     }
 
+    // Filtrar por nombre, case insensitive
+    public List<Persona> buscarPorNombre(String nombre) {
+        if (nombre == null || nombre.trim().isEmpty()) {
+            return personaRepository.findAll();
+        }
+        return personaRepository.findByNombreContainingIgnoreCase(nombre.trim());
+    }
+
     // Eliminar por ID
     public boolean deleteById(Long id) {
         Optional<Persona> persona = personaRepository.findById(id);

@@ -83,7 +83,6 @@ public class EmpleadoTiempoCompletoController {
                     return ResponseEntity.ok(response);
                 })
                 .orElse(ResponseEntity.notFound().build());
-
     }
 
     @GetMapping

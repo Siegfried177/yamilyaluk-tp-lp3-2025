@@ -12,5 +12,8 @@ public interface PersonaRepository extends JpaRepository<Persona, Long> {
     // Ejemplo de método personalizado opcional
     List<Persona> findByApellido(String apellido);
 
+    // Busca por nombre, case insensitive, conteniendo el valor
+    List<Persona> findByNombreContainingIgnoreCase(String nombre);
+
     Persona findByNumeroDocumento(String numeroDocumento);
 }

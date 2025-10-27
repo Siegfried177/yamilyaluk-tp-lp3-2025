@@ -1,6 +1,8 @@
 package py.edu.uc.lp32025.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMin;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -8,7 +10,7 @@ import java.time.LocalDate;
 @DiscriminatorValue("EMPLEADO_TIEMPO_COMPLETO")
 public class EmpleadoTiempoCompleto extends Persona {
 
-    @Column(nullable = false)
+    @DecimalMin(value = "2899048", message = "El salario debe ser mayor o igual a 2.899.048")
     private BigDecimal salarioMensual;
 
     @Column(nullable = false)
@@ -38,6 +40,15 @@ public class EmpleadoTiempoCompleto extends Persona {
         return salarioMensual.subtract(descuento);
     }
 
+    // ------------------------
+// GETSALARIO SOBRESCRITO
+// ------------------------
+    @Override
+    public BigDecimal getSalario() {
+        return calcularSalario();
+    }
+
+
     /**
      * Calcula deducciones fijas del 5%.
      */
@@ -52,8 +63,13 @@ public class EmpleadoTiempoCompleto extends Persona {
      */
     @Override
     public boolean validarDatosEspecificos() {
-        return salarioMensual != null &&
-                salarioMensual.compareTo(BigDecimal.valueOf(2_899_048)) >= 0;
+        if (salarioMensual == null || salarioMensual.compareTo(new BigDecimal("2900000")) < 0) {
+            return false; // salario inválido
+        }
+        if (departamento == null || departamento.isBlank()) {
+            return false; // departamento inválido
+        }
+        return true; // todo bien
     }
 
     // -------------------------------------------------

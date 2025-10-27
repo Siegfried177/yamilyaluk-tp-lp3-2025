@@ -36,6 +36,15 @@ public class Contratista extends Persona {
         return montoPorProyecto.multiply(BigDecimal.valueOf(proyectosCompletados));
     }
 
+    // ------------------------
+// GETSALARIO SOBRESCRITO
+// ------------------------
+    @Override
+    public BigDecimal getSalario() {
+        return calcularSalario();
+    }
+
+
     @Override
     protected BigDecimal calcularDeducciones() {
         return BigDecimal.ZERO; // Contratistas no tienen deducciones

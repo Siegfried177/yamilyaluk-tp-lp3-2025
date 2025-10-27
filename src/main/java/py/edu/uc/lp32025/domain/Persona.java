@@ -3,9 +3,13 @@ package py.edu.uc.lp32025.domain;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED) // permite herencia en JPA
+@DiscriminatorColumn(name = "TIPO_PERSONA")
 public abstract class Persona {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,6 +19,9 @@ public abstract class Persona {
 
     private String apellido;
 
+    @NotBlank(message = "El número de documento no puede estar vacío")
+    @Pattern(regexp = "\\d+", message = "El número de documento debe contener solo dígitos")
+    @Size(min = 1, max = 20, message = "El número de documento debe tener entre 1 y 20 dígitos")
     private String numeroDocumento;
 
     private LocalDate fechaNacimiento;
@@ -57,6 +64,8 @@ public abstract class Persona {
         if (salario == null) return BigDecimal.ZERO;
         return salario.multiply(BigDecimal.valueOf(0.10)); // 10% del salario
     }
+
+    public abstract BigDecimal getSalario();
 
     // Método template: define el flujo del cálculo de impuestos
     public BigDecimal calcularImpuestos() {

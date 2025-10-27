@@ -61,6 +61,15 @@ public class EmpleadoPorHora extends Persona {
     }
 
     // ------------------------
+// GETSALARIO SOBRESCRITO
+// ------------------------
+    @Override
+    public BigDecimal getSalario() {
+        return calcularSalario();
+    }
+
+
+    // ------------------------
     // GETTERS Y SETTERS
     // ------------------------
     public BigDecimal getTarifaPorHora() { return tarifaPorHora; }
