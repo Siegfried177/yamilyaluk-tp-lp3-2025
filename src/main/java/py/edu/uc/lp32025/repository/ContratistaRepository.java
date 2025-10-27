@@ -1,0 +1,14 @@
+package py.edu.uc.lp32025.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import py.edu.uc.lp32025.domain.Contratista;
+
+import java.util.List;
+
+public interface ContratistaRepository extends JpaRepository<Contratista, Long> {
+
+    // Método específico: buscar contratos vigentes
+    @Query("SELECT c FROM Contratista c WHERE c.fechaFinContrato >= CURRENT_DATE")
+    List<Contratista> findContratosVigentes();
+}

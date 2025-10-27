@@ -1,14 +1,12 @@
 package py.edu.uc.lp32025.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import java.time.LocalDate; // Importación necesaria
+import jakarta.persistence.*;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Entity
-public class Persona {
-
+@Inheritance(strategy = InheritanceType.JOINED) // permite herencia en JPA
+public abstract class Persona {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,10 +19,10 @@ public class Persona {
 
     private LocalDate fechaNacimiento;
 
-    // Constructores, Getters y Setters
-    public Persona() {
-    }
+    // Constructor vacío requerido por JPA
+    public Persona() {}
 
+    // Constructor completo
     public Persona(String nombre, String apellido, String numeroDocumento, LocalDate fechaNacimiento) {
         this.nombre = nombre;
         this.apellido = apellido;
@@ -32,7 +30,48 @@ public class Persona {
         this.fechaNacimiento = fechaNacimiento;
     }
 
-    // Getters y Setters
+    // -----------------------
+    // MÉTODOS ABSTRACTOS
+    // -----------------------
+
+    // Debe ser implementado por cada subclase
+    public abstract BigDecimal calcularSalario();
+
+    // Método abstracto que las subclases deben definir según su lógica
+    protected abstract BigDecimal calcularDeducciones();
+
+    // Método abstracto de validación específica
+    public abstract boolean validarDatosEspecificos();
+
+    // -----------------------
+    // MÉTODOS CONCRETOS
+    // -----------------------
+
+    // Puede ser sobrescrito por las subclases
+    public String obtenerInformacionCompleta() {
+        return String.format("Nombre: %s %s, Documento: %s", nombre, apellido, numeroDocumento);
+    }
+
+    // Método concreto auxiliar
+    public BigDecimal calcularImpuestoBase(BigDecimal salario) {
+        if (salario == null) return BigDecimal.ZERO;
+        return salario.multiply(BigDecimal.valueOf(0.10)); // 10% del salario
+    }
+
+    // Método template: define el flujo del cálculo de impuestos
+    public BigDecimal calcularImpuestos() {
+        BigDecimal salario = calcularSalario();
+        BigDecimal deducciones = calcularDeducciones();
+        BigDecimal impuestoBase = calcularImpuestoBase(salario);
+
+        // Estructura del template: puede usarse o modificarse por subclases
+        return impuestoBase.subtract(deducciones.max(BigDecimal.ZERO));
+    }
+
+    // -----------------------
+    // GETTERS Y SETTERS
+    // -----------------------
+
     public Long getId() {
         return id;
     }
