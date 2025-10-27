@@ -21,6 +21,7 @@
 3. Buscar empleado por ID -- GET http://localhost:8080/api/personas/x
 4. Buscar empleado por Nombre -- GET http://localhost:8080/api/personas?nombre=""
 5. Consulta de nomina -- GET http://localhost:8080/api/personas/nomina
+6. Reporte de Polimorfismo -- GET http://localhost:8080/api/personas/reporte-polimorfismo
 
 ## Screenshots
 ![Batch exitoso](screenshots/batch.png)
@@ -29,3 +30,4 @@
 ![Buscar por Nombre](screenshots/buscar_porNombre.png)
 ![Listar Todos](screenshots/listar_todos.png)
 ![Nomina](screenshots/nomina.png)
+![Reporte de Polimorfismo](screenshots/reporte.png)
