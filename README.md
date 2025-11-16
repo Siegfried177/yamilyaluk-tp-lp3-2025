@@ -16,7 +16,8 @@
    http://localhost:8080/api/personas
 
 ## CURLs con Ejemplos
-1. Batch de varios Empleados Tiempo Completo (Son validados) --
+1. Batch de varios Empleados Tiempo Completo (Son validados) --  
+
    curl -X POST "http://localhost:8080/api/empleados-tiempo-completo/batch" \
   -H "Content-Type: application/json" \
   -d '{
@@ -37,23 +38,28 @@
       }'
    
 2. Listar todos los empleados --
+
 curl -X GET "http://localhost:8080/api/personas/listar-todos" \
   -H "Accept: application/json"
   
 3. Buscar empleado por ID --
+
 curl -X GET "http://localhost:8080/api/personas/3" \
   -H "Accept: application/json"
 
 4. Buscar empleado por Nombre --
+
 curl -X GET "http://localhost:8080/api/personas?nombre=Carlos" \
   -H "Accept: application/json"
 
 5. Consulta de nomina -- 
+
 curl -X GET "http://localhost:8080/api/personas/nomina" \
   -H "Accept: application/json"
 
 6. Reporte de Polimorfismo --
-7. curl -X GET "http://localhost:8080/api/personas/reporte-polimorfismo" \
+
+curl -X GET "http://localhost:8080/api/personas/reporte-polimorfismo" \
   -H "Accept: application/json"
 
 
