@@ -4,82 +4,92 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import py.edu.uc.lp32025.domain.Persona;
-import py.edu.uc.lp32025.service.RemuneracionesService;
-import py.edu.uc.lp32025.dto.ResponseDTO;
 import py.edu.uc.lp32025.dto.PersonaDTO;
+import py.edu.uc.lp32025.dto.ReportePolimorfismoDTO;
+import py.edu.uc.lp32025.dto.ResponseDTO;
 import py.edu.uc.lp32025.service.PersonaService;
+import py.edu.uc.lp32025.service.RemuneracionesService;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/personas")
 public class PersonaController {
 
-    private final RemuneracionesService remuneracionesService;
     private final PersonaService personaService;
+    private final RemuneracionesService remuneracionesService;
 
-    public PersonaController(PersonaService personaService, RemuneracionesService remuneracionesService) {
-        this.remuneracionesService = remuneracionesService;
+    public PersonaController(PersonaService personaService,
+                             RemuneracionesService remuneracionesService) {
         this.personaService = personaService;
+        this.remuneracionesService = remuneracionesService;
     }
 
-    // GET -> listar todos los empleados de la jerarquía
-    @GetMapping("/listar-todos")
-    public ResponseEntity<List<Persona>> getAllEmpleados() {
-        return ResponseEntity.ok(remuneracionesService.listarTodosLosEmpleados());
-    }
+    /* ======== ENDPOINTS CRUD ======== */
 
-    // Filtrar por nombre (case insensitive)
     @GetMapping
-    public ResponseEntity<List<Persona>> buscarPorNombre(@RequestParam(required = false) String nombre) {
-        List<Persona> personas = personaService.buscarPorNombre(nombre);
-        return ResponseEntity.ok(personas);
+    public ResponseEntity<List<Persona>> listar(@RequestParam(required = false) String nombre) {
+        return ResponseEntity.ok(personaService.buscarPorNombre(nombre));
     }
 
-    @GetMapping("/reporte-polimorfismo")
-    public ResponseEntity<String> reportePolimorfismo() {
-        remuneracionesService.generarReportePolimorfismo();
-        return ResponseEntity.ok("Reporte de polimorfismo generado. Revisa la consola del servidor.");
+    @GetMapping("/{id}")
+    public ResponseEntity<ResponseDTO<PersonaDTO>> obtenerPorId(@PathVariable Long id) {
+        Persona p = personaService.findByIdThrow(id);
+
+        PersonaDTO dto = new PersonaDTO(
+                p.getId(),
+                p.getNombre(),
+                p.getApellido(),
+                p.getNumeroDocumento(),
+                p.getFechaNacimiento()
+        );
+
+        return ResponseEntity.ok(
+                new ResponseDTO<>(200, "Persona encontrada", "OK", dto)
+        );
     }
 
-    // GET -> calcular nómina total por tipo de empleado
+    @PostMapping
+    public ResponseEntity<ResponseDTO<Persona>> guardar(@RequestBody Persona persona) {
+        Persona saved = personaService.save(persona);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(new ResponseDTO<>(201, "Persona creada correctamente", "Creado", saved));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ResponseDTO<Persona>> actualizar(@PathVariable Long id,
+                                                           @RequestBody Persona persona) {
+        Persona updated = personaService.update(id, persona);
+        return ResponseEntity.ok(
+                new ResponseDTO<>(200, "Persona actualizada", "OK", updated)
+        );
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ResponseDTO<Void>> eliminar(@PathVariable Long id) {
+        personaService.delete(id);
+        return ResponseEntity.ok(
+                new ResponseDTO<>(200, "Persona eliminada", "OK", null)
+        );
+    }
+
+    /* ==== ENDPOINTS RELACIONADOS A REMUNERACIONES ==== */
+
     @GetMapping("/nomina")
     public ResponseEntity<ResponseDTO<Map<String, BigDecimal>>> obtenerNomina() {
-        Map<String, BigDecimal> nominaTotal = remuneracionesService.calcularNominaTotal();
-        ResponseDTO<Map<String, BigDecimal>> response = new ResponseDTO<>(
-                200,
-                "Nómina total calculada correctamente",
-                "Cálculo exitoso",
-                nominaTotal
+        Map<String, BigDecimal> nomina = remuneracionesService.calcularNominaTotal();
+        return ResponseEntity.ok(
+                new ResponseDTO<>(200, "Nómina total calculada", "OK", nomina)
         );
-        return ResponseEntity.ok(response);
     }
 
-    // GET -> obtener empleado por ID
-    @GetMapping("/{id}")
-    public ResponseEntity<ResponseDTO<PersonaDTO>> getEmpleadoById(@PathVariable Long id) {
-        return remuneracionesService.listarTodosLosEmpleados().stream()
-                .filter(p -> p.getId().equals(id))
-                .findFirst()
-                .map(p -> {
-                    PersonaDTO dto = new PersonaDTO(
-                            p.getId(),
-                            p.getNombre(),
-                            p.getApellido(),
-                            p.getNumeroDocumento(),
-                            p.getFechaNacimiento()
-                    );
-                    ResponseDTO<PersonaDTO> response = new ResponseDTO<>(
-                            200,
-                            "Empleado encontrado correctamente",
-                            "Empleado encontrado",
-                            dto
-                    );
-                    return ResponseEntity.ok(response);
-                })
-                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body(new ResponseDTO<>(404, "No existe empleado con ID " + id, "Empleado no encontrado", null)));
+    @GetMapping("/reporte/polimorfismo")
+    public ResponseEntity<List<ReportePolimorfismoDTO>> generarReportePolimorfismo() {
+        List<ReportePolimorfismoDTO> reporte = remuneracionesService.generarReportePolimorfismo();
+        return ResponseEntity.ok(reporte);
     }
+
 }

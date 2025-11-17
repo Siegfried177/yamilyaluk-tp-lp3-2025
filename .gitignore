@@ -1,33 +1,75 @@
-HELP.md
+# ===========================
+# Maven / Java
+# ===========================
 target/
-.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
 
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
+# Compilados Java
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+
+# Logs
+*.log
+
+# Sistema de ejecución temporal
+hs_err_pid*
+replay_pid*
+
+# ===========================
+# IDEs
+# ===========================
 
 ### IntelliJ IDEA ###
-.idea
-*.iws
+.idea/
 *.iml
 *.ipr
+*.iws
+
+### Eclipse / STS ###
+.classpath
+.project
+.settings/
+.apt_generated
+.springBeans
+.sts4-cache
+.factorypath
 
 ### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
+nbproject/private/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
 
 ### VS Code ###
 .vscode/
+
+# ===========================
+# Bases de datos locales
+# (No deben versionarse)
+# ===========================
+*.db
+*.sqlite
+*.sqlite3
+*.mv.db
+*.h2.db
+*.sql
+*.cdb
+
+# ===========================
+# Sistema operativo
+# ===========================
+
+# Windows
+Thumbs.db
+desktop.ini
+
+# Linux
+*~

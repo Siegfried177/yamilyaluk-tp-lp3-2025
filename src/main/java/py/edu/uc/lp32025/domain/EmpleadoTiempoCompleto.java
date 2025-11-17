@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 
 @Entity
@@ -54,8 +55,21 @@ public class EmpleadoTiempoCompleto extends Persona {
      */
     @Override
     public BigDecimal calcularDeducciones() {
-        if (salarioMensual == null) return BigDecimal.ZERO;
-        return salarioMensual.multiply(BigDecimal.valueOf(0.05));
+        if (this.salarioMensual == null) {
+            return BigDecimal.ZERO;
+        }
+
+        BigDecimal porcentaje;
+        String dept = this.departamento == null ? "" : this.departamento.trim().toLowerCase();
+
+        if ("it".equals(dept) || "information technology".equalsIgnoreCase(dept)) {
+            porcentaje = new BigDecimal("0.05"); // 5%
+        } else {
+            porcentaje = new BigDecimal("0.03"); // 3%
+        }
+
+        // deducciones = salarioBase * porcentaje
+        return this.salarioMensual.multiply(porcentaje).setScale(2, RoundingMode.HALF_UP);
     }
 
     /**

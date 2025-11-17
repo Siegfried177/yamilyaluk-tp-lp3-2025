@@ -2,11 +2,17 @@ package py.edu.uc.lp32025.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import py.edu.uc.lp32025.domain.Contratista;
+import py.edu.uc.lp32025.domain.EmpleadoPorHora;
+import py.edu.uc.lp32025.domain.EmpleadoTiempoCompleto;
 import py.edu.uc.lp32025.domain.Persona;
+import py.edu.uc.lp32025.dto.ReporteEmpleadoDto;
 import py.edu.uc.lp32025.repository.PersonaRepository;
+import py.edu.uc.lp32025.dto.ReportePolimorfismoDTO;
 
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -49,43 +55,60 @@ public class RemuneracionesService {
     // ------------------------------------------------------------
     // 3. Reporte completo (para devolver como JSON)
     // ------------------------------------------------------------
-    public List<Map<String, Object>> generarReporteCompleto() {
-        log.info("Generando reporte completo de empleados...");
-        List<Persona> empleados = listarTodosLosEmpleados();
-        List<Map<String, Object>> reporte = new ArrayList<>();
+    public List<ReporteEmpleadoDto> generarReporteCompleto() {
+        List<Persona> personas = personaRepository.findAll();
 
-        for (Persona e : empleados) {
-            Map<String, Object> info = new HashMap<>();
-            info.put("id", e.getId());
-            info.put("tipoEmpleado", e.getClass().getSimpleName());
-            info.put("informacionCompleta", e.obtenerInformacionCompleta());
-            info.put("impuestos", e.calcularImpuestos());
-            info.put("datosValidos", e.validarDatosEspecificos());
-            reporte.add(info);
-        }
-
-        log.debug("Reporte completo generado con {} entradas", reporte.size());
-        return reporte;
+        return personas.stream()
+                .map(this::convertirADto)
+                .collect(Collectors.toList());
     }
 
-    // ------------------------------------------------------------
-    // 4. REPORTE DE POLIMORFISMO (para consola)
-    // ------------------------------------------------------------
-    public void generarReportePolimorfismo() {
-        log.info("Generando reporte de polimorfismo...");
+    private ReporteEmpleadoDto convertirADto(Persona p) {
+        ReporteEmpleadoDto dto = new ReporteEmpleadoDto();
 
+        dto.setNombre(p.getNombre());
+        dto.setApellido(p.getApellido());
+        dto.setNumeroDocumento(p.getNumeroDocumento());
+        dto.setFechaNacimiento(p.getFechaNacimiento());
+
+        // Salario bruto polimórfico
+        dto.setSalario(p.calcularSalario());
+
+        dto.setTipoEmpleado(obtenerTipoEmpleado(p));
+
+        return dto;
+    }
+
+    private String obtenerTipoEmpleado(Persona p) {
+        if (p instanceof EmpleadoTiempoCompleto) return "Empleado Tiempo Completo";
+        if (p instanceof EmpleadoPorHora) return "Empleado por Hora";
+        if (p instanceof Contratista) return "Contratista";
+        return "Persona";
+    }
+
+    public List<ReportePolimorfismoDTO> generarReportePolimorfismo() {
         List<Persona> empleados = listarTodosLosEmpleados();
-        System.out.println("=== REPORTE DE POLIMORFISMO ===");
+        List<ReportePolimorfismoDTO> reporte = new ArrayList<>();
 
         for (Persona e : empleados) {
-            System.out.println("Empleado: " + e.getNombre() + " " + e.getApellido());
-            System.out.println("Tipo: " + e.getClass().getSimpleName());
-            System.out.println("Información completa: " + e.obtenerInformacionCompleta());
-            System.out.println("Impuestos calculados: " + e.calcularImpuestos());
-            System.out.println("Datos válidos: " + e.validarDatosEspecificos());
-            System.out.println("-----------------------------");
+            boolean validacion;
+            try {
+                validacion = e.validarDatosEspecificos();
+            } catch (Exception ex) {
+                validacion = false;
+            }
+
+            reporte.add(
+                    new ReportePolimorfismoDTO(
+                            e.getNombre() + " " + e.getApellido(),
+                            e.getClass().getSimpleName(),
+                            e.obtenerInformacionCompleta(),
+                            e.calcularImpuestos(),
+                            validacion
+                    )
+            );
         }
 
-        log.info("Reporte de polimorfismo generado correctamente.");
+        return reporte;
     }
 }
