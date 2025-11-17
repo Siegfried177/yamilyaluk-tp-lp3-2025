@@ -1,4 +1,7 @@
-package py.edu.uc.lp32025.mapeable;
+package py.edu.uc.lp32025.interfaces;
+
+import py.edu.uc.lp32025.domain.Avatar;
+import py.edu.uc.lp32025.domain.PosicionGPS;
 
 public interface Mapeable {
 

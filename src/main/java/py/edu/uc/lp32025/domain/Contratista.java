@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Getter
 @Entity
 @DiscriminatorValue("CONTRATISTA")
-public class Contratista extends Persona {
+public class Contratista extends Empleado {
     @Column(nullable = false)
     private BigDecimal montoPorProyecto;
 
