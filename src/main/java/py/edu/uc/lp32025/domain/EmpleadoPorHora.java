@@ -1,12 +1,16 @@
 package py.edu.uc.lp32025.domain;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.math.BigDecimal;
 
+@Setter
+@Getter
 @Entity
 @DiscriminatorValue("EMPLEADO_POR_HORA")
-public class EmpleadoPorHora extends Persona {
-
+public class EmpleadoPorHora extends Empleado {
     @Column(nullable = false)
     private BigDecimal tarifaPorHora;
 
@@ -69,12 +73,4 @@ public class EmpleadoPorHora extends Persona {
     }
 
 
-    // ------------------------
-    // GETTERS Y SETTERS
-    // ------------------------
-    public BigDecimal getTarifaPorHora() { return tarifaPorHora; }
-    public void setTarifaPorHora(BigDecimal tarifaPorHora) { this.tarifaPorHora = tarifaPorHora; }
-
-    public Integer getHorasTrabajadas() { return horasTrabajadas; }
-    public void setHorasTrabajadas(Integer horasTrabajadas) { this.horasTrabajadas = horasTrabajadas; }
 }

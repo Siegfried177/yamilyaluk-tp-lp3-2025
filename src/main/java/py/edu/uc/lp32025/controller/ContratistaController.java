@@ -7,7 +7,7 @@ import py.edu.uc.lp32025.service.ContratistaService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/contratistas")
+@RequestMapping("/api/contratistas")
 public class ContratistaController {
 
     private final ContratistaService service;

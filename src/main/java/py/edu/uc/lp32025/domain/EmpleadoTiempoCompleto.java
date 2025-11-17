@@ -2,14 +2,18 @@ package py.edu.uc.lp32025.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 
+@Setter
+@Getter
 @Entity
 @DiscriminatorValue("EMPLEADO_TIEMPO_COMPLETO")
-public class EmpleadoTiempoCompleto extends Persona {
+public class EmpleadoTiempoCompleto extends Empleado {
 
     @DecimalMin(value = "2899048", message = "El salario debe ser mayor o igual a 2.899.048")
     private BigDecimal salarioMensual;
@@ -102,19 +106,4 @@ public class EmpleadoTiempoCompleto extends Persona {
     // GETTERS Y SETTERS
     // -------------------------------------------------
 
-    public BigDecimal getSalarioMensual() {
-        return salarioMensual;
-    }
-
-    public void setSalarioMensual(BigDecimal salarioMensual) {
-        this.salarioMensual = salarioMensual;
-    }
-
-    public String getDepartamento() {
-        return departamento;
-    }
-
-    public void setDepartamento(String departamento) {
-        this.departamento = departamento;
-    }
 }

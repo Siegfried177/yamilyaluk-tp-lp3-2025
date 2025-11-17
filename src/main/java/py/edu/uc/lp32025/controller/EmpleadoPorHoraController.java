@@ -6,7 +6,7 @@ import py.edu.uc.lp32025.service.EmpleadoPorHoraService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/empleados-por-hora")
+@RequestMapping("/api/empleados-por-hora")
 public class EmpleadoPorHoraController {
 
     private final EmpleadoPorHoraService service;

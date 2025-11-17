@@ -1,13 +1,17 @@
 package py.edu.uc.lp32025.domain;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+@Setter
+@Getter
 @Entity
 @DiscriminatorValue("CONTRATISTA")
 public class Contratista extends Persona {
-
     @Column(nullable = false)
     private BigDecimal montoPorProyecto;
 
@@ -25,6 +29,13 @@ public class Contratista extends Persona {
         this.montoPorProyecto = montoPorProyecto;
         this.proyectosCompletados = proyectosCompletados;
         this.fechaFinContrato = fechaFinContrato;
+    }
+
+    public Contratista(String nombre, String apellido, String numeroDocumento, LocalDate fechaNacimiento) {
+        super(nombre, apellido, numeroDocumento, fechaNacimiento);
+        this.montoPorProyecto = null;
+        this.proyectosCompletados = null;
+        this.fechaFinContrato = null;
     }
 
     // ----------------------------
@@ -71,15 +82,4 @@ public class Contratista extends Persona {
         return fechaFinContrato != null && !fechaFinContrato.isBefore(LocalDate.now());
     }
 
-    // ----------------------------
-    // GETTERS Y SETTERS
-    // ----------------------------
-    public BigDecimal getMontoPorProyecto() { return montoPorProyecto; }
-    public void setMontoPorProyecto(BigDecimal montoPorProyecto) { this.montoPorProyecto = montoPorProyecto; }
-
-    public Integer getProyectosCompletados() { return proyectosCompletados; }
-    public void setProyectosCompletados(Integer proyectosCompletados) { this.proyectosCompletados = proyectosCompletados; }
-
-    public LocalDate getFechaFinContrato() { return fechaFinContrato; }
-    public void setFechaFinContrato(LocalDate fechaFinContrato) { this.fechaFinContrato = fechaFinContrato; }
 }
