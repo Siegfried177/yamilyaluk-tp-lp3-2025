@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Setter
 @Getter
@@ -20,9 +21,17 @@ public class EmpleadoPorHora extends Empleado {
     public EmpleadoPorHora() {}
 
     public EmpleadoPorHora(String nombre, String apellido, String numeroDocumento,
-                           java.time.LocalDate fechaNacimiento,
-                           BigDecimal tarifaPorHora, Integer horasTrabajadas) {
-        super(nombre, apellido, numeroDocumento, fechaNacimiento);
+                           LocalDate fechaNacimiento,
+                           PosicionGPS posicionGPS, // <-- Nuevo
+                           Avatar avatar, // <-- Nuevo
+                           LocalDate fechaContratacion, // <-- Nuevo
+                           BigDecimal tarifaPorHora,
+                           Integer horasTrabajadas) {
+
+        // Llama al constructor completo de la clase Empleado
+        super(nombre, apellido, numeroDocumento, fechaNacimiento,
+                posicionGPS, avatar, fechaContratacion);
+
         this.tarifaPorHora = tarifaPorHora;
         this.horasTrabajadas = horasTrabajadas;
     }

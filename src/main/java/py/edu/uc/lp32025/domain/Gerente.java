@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import py.edu.uc.lp32025.exception.DiasInsuficientesException;
 import py.edu.uc.lp32025.exception.PermisoNoConcedidoException;
 import py.edu.uc.lp32025.interfaces.GerentePermisionable;
 
@@ -71,51 +72,57 @@ public class Gerente extends Empleado implements GerentePermisionable {
     @Override
     public boolean autorizarPermisoSubordinado(Long subordinadoId, String comentarioGerente)
             throws PermisoNoConcedidoException {
-
-        log.info("Gerente {} ({}) autoriza solicitud de Empleado ID: {}",
-                this.getNombre(), this.areaResponsabilidad, subordinadoId);
-
-        // Simulación de lógica: Un Gerente solo puede autorizar si no está de vacaciones.
-        // Aquí iría la lógica de negocio para verificar si el subordinado existe,
-        // y si el gerente tiene las credenciales para aprobar en esa área.
-
-        // Lógica trivial: Siempre aprueba
+        // ... (Lógica de autorización) ...
         return true;
     }
 
     @Override
     public void solicitarVacaciones(Long empleadoId, LocalDate fechaInicio, LocalDate fechaFin)
-            throws PermisoNoConcedidoException {
+            throws PermisoNoConcedidoException, DiasInsuficientesException { // AÑADIDA DIASINSUFICIENTESEXCEPTION
 
         long diasSolicitados = ChronoUnit.DAYS.between(fechaInicio, fechaFin.plusDays(1));
 
-        // La lógica de Gerente SOBRESCRIBE la validación de días del Empleado base
-        // (ya que tienen derechos especiales)
         log.info("[GERENTE ID: {}] Solicitud Vacaciones: Días: {}", this.getId(), diasSolicitados);
 
-        // 1. Validaciones básicas de la clase padre (Antigüedad, Fechas, etc.)
-        // Podemos llamar al método padre y luego añadir la lógica específica,
-        // o reescribir toda la lógica de validación aquí.
-        // Para la demo, reescribimos la lógica de días.
+        // 1. Validación de fechas (se mantiene)
+        if (fechaInicio.isAfter(fechaFin)) {
+            throw new PermisoNoConcedidoException("La fecha de inicio no puede ser posterior a la fecha de fin.");
+        }
 
-        // Regla: Solo los gerentes pueden solicitar más de 20 días (suponiendo que su antigüedad lo permite)
+        // 2. Lógica Especial de Gerente (Más de 20 días)
         if (diasSolicitados > 20) {
             log.warn("Gerente {} solicitando más de 20 días. Validando antigüedad especial...", this.getNombre());
+            // Regla: Si solicita más de 20 días Y no tiene 5 años de antigüedad
+            if (añosAntiguedad < 5) {
+                log.error("Gerente ID {} - Solicitud Rechazada: {} días sin 5 años de antigüedad.", empleadoId, diasSolicitados);
 
-            // Suponemos una regla específica: Gerentes con > 5 años tienen derecho a 25 días.
-            if (ChronoUnit.YEARS.between(this.getFechaContratacion(), LocalDate.now()) < 5) {
-                // Aquí lanzamos la excepción específica del ejercicio
-                throw new PermisoNoConcedidoException("DiasInsuficientesException: Solicitud excede 20 días y no cumple requisito de antigüedad de Gerente.");
+                // 🚨 Se lanza PermisoNoConcedidoException, ya que la regla de negocio prohíbe el permiso.
+                throw new PermisoNoConcedidoException(
+                        "Solicitud excede 20 días. Se requiere 5 años de antigüedad como Gerente para días adicionales (Antigüedad actual: " + añosAntiguedad + " años)."
+                );
             }
-            // Si tiene > 5 años, el Gerente puede solicitar hasta 25 días.
+
+            // Regla: Si supera el máximo absoluto de 25 días (incluso con antigüedad)
             if (diasSolicitados > 25) {
-                throw new PermisoNoConcedidoException("Solicitud excede el máximo de 25 días para Gerente de alta antigüedad.");
+                // *** CAMBIO CLAVE: Lanzar DiasInsuficientesException ***
+                throw new DiasInsuficientesException("Solicitud excede el máximo absoluto de 25 días permitido para Gerentes de alta antigüedad.");
             }
         }
 
-        // Si no supera los 20 días, o si pasó la validación de 25 días...
-        log.info("✅ Solicitud de Vacaciones para Gerente {} (ID: {}) Aprobada por Regla Especial.",
-                this.getNombre(), this.getId());
+        // 3. Chequeo contra días disponibles totales (30)
+        if (diasSolicitados > this.diasVacacionesDisponibles) {
+            // También se lanza DiasInsuficientesException aquí por si se agotaron los 30 días.
+            throw new DiasInsuficientesException(
+                    "Días agotados. Solicitados: " + diasSolicitados +
+                            ", disponibles: " + this.diasVacacionesDisponibles
+            );
+        }
+
+        // Si pasa todas las validaciones
+        this.diasVacacionesDisponibles -= diasSolicitados;
+
+        log.info("✅ Solicitud de Vacaciones para Gerente {} (ID: {}) Aprobada por Regla Especial. Días restantes: {}",
+                this.getNombre(), this.getId(), this.diasVacacionesDisponibles);
     }
 
     @Override

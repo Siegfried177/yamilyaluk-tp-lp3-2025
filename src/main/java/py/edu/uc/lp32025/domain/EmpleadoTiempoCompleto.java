@@ -24,8 +24,17 @@ public class EmpleadoTiempoCompleto extends Empleado {
     public EmpleadoTiempoCompleto() {}
 
     public EmpleadoTiempoCompleto(String nombre, String apellido, String numeroDocumento,
-                                  LocalDate fechaNacimiento, BigDecimal salarioMensual, String departamento) {
-        super(nombre, apellido, numeroDocumento, fechaNacimiento);
+                                  LocalDate fechaNacimiento,
+                                  PosicionGPS posicionGPS, // <-- Nuevo
+                                  Avatar avatar, // <-- Nuevo
+                                  LocalDate fechaContratacion, // <-- Nuevo
+                                  BigDecimal salarioMensual,
+                                  String departamento) {
+
+        // Llama al constructor completo de la clase Empleado
+        super(nombre, apellido, numeroDocumento, fechaNacimiento,
+                posicionGPS, avatar, fechaContratacion);
+
         this.salarioMensual = salarioMensual;
         this.departamento = departamento;
     }

@@ -23,9 +23,19 @@ public class Contratista extends Empleado {
 
     public Contratista() {}
 
-    public Contratista(String nombre, String apellido, String numeroDocumento, LocalDate fechaNacimiento,
-                       BigDecimal montoPorProyecto, Integer proyectosCompletados, LocalDate fechaFinContrato) {
-        super(nombre, apellido, numeroDocumento, fechaNacimiento);
+    public Contratista(String nombre, String apellido, String numeroDocumento,
+                       LocalDate fechaNacimiento,
+                       PosicionGPS posicionGPS, // <-- Nuevo
+                       Avatar avatar, // <-- Nuevo
+                       LocalDate fechaContratacion, // <-- Nuevo
+                       BigDecimal montoPorProyecto,
+                       Integer proyectosCompletados,
+                       LocalDate fechaFinContrato) {
+
+        // Llama al constructor completo de la clase Empleado
+        super(nombre, apellido, numeroDocumento, fechaNacimiento,
+                posicionGPS, avatar, fechaContratacion);
+
         this.montoPorProyecto = montoPorProyecto;
         this.proyectosCompletados = proyectosCompletados;
         this.fechaFinContrato = fechaFinContrato;

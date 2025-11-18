@@ -1,50 +1,68 @@
 package py.edu.uc.lp32025.mapper;
 
-import py.edu.uc.lp32025.domain.Persona;
-
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Objects;
+import py.edu.uc.lp32025.domain.Persona; // Usaremos Persona como la Entidad base
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
- * Clase base que contiene métodos utilitarios estáticos para mapeo de tipos de datos básicos.
- * Las subclases deben implementar el método toDto(Persona).
+ * Clase base abstracta para todos los mappers de la aplicación.
+ * Proporciona implementaciones por defecto para conversiones de lista.
+ * D: DTO de destino
+ * E: Entidad de origen
  */
-public abstract class BaseMapper {
-
-    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE;
+public abstract class BaseMapper<D, E extends Persona> implements BaseMapperInterface<D, E> {
 
     // =========================================================
-    // MÉTODOS ESTÁTICOS PARA CONVERSIONES BÁSICAS
+    // IMPLEMENTACIONES DE LISTA (Reutilización de código)
     // =========================================================
 
-    public static String mapBigDecimalToString(BigDecimal value, int scale) {
-        if (Objects.isNull(value)) {
-            return "";
+    @Override
+    public List<D> toDtoList(List<E> entityList) {
+        if (entityList == null) {
+            return List.of();
         }
-        return value.setScale(scale, RoundingMode.HALF_UP).toPlainString();
+        return entityList.stream()
+                .map(this::toDto)
+                .collect(Collectors.toList());
     }
 
-    public static String mapLocalDateToString(LocalDate date) {
-        if (Objects.isNull(date)) {
-            return "";
+    @Override
+    public List<E> toEntityList(List<D> dtoList) {
+        if (dtoList == null) {
+            return List.of();
         }
-        return date.format(DATE_FORMATTER);
-    }
-
-    public static String mapNullableString(String value) {
-        return Objects.requireNonNullElse(value, "");
+        return dtoList.stream()
+                .map(this::toEntity)
+                .collect(Collectors.toList());
     }
 
     // =========================================================
-    // MÉTODO ABSTRACTO DE MAPEADO (OBLIGATORIO)
+    // MÉTODOS ABSTRACTOS (OBLIGATORIO)
     // =========================================================
 
     /**
-     * Convierte una entidad Persona a un DTO concreto.
-     * Las subclases decidirán qué tipo de DTO devolver.
+     * Convierte la Entidad (que debe heredar de Persona) al DTO (D).
+     * @param entity La entidad de origen.
+     * @return El DTO de destino.
      */
-    public abstract Object toDto(Persona entity);
+    @Override
+    public abstract D toDto(E entity);
+
+    /**
+     * Convierte el DTO (D) a la Entidad (E).
+     * @param dto El DTO de origen.
+     * @return La entidad de destino.
+     */
+    @Override
+    public abstract E toEntity(D dto);
+}
+
+// ----------------------------------------------------
+// Nota: Necesitas esta interfaz para que el código compile:
+// ----------------------------------------------------
+interface BaseMapperInterface<D, E> {
+    D toDto(E entity);
+    E toEntity(D dto);
+    List<D> toDtoList(List<E> entityList);
+    List<E> toEntityList(List<D> dtoList);
 }

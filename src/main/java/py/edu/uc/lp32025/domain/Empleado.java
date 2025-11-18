@@ -52,7 +52,6 @@ public class Empleado extends Persona implements Mapeable, Permisionable {
     public Empleado(String nombre, String apellido, String numeroDocumento,
                     LocalDate fechaNacimiento, PosicionGPS posicionGPS,
                     Avatar avatar, LocalDate fechaContratacion) {
-
         super(nombre, apellido, numeroDocumento, fechaNacimiento);
         this.posicionGPS = posicionGPS;
         this.avatar = avatar;
@@ -63,7 +62,6 @@ public class Empleado extends Persona implements Mapeable, Permisionable {
 
     public Empleado(String nombre, String apellido, String numeroDocumento,
                     LocalDate fechaNacimiento) {
-
         super(nombre, apellido, numeroDocumento, fechaNacimiento);
         this.posicionGPS = null;
         this.avatar = null;
@@ -123,11 +121,6 @@ public class Empleado extends Persona implements Mapeable, Permisionable {
 
     @Override
     public void solicitarPermisoEspecial(Long empleadoId, LocalDate fechaInicio, LocalDate fechaFin, String motivo) throws PermisoNoConcedidoException {
-
-    }
-
-    public void solicitarPermisoEspecial(LocalDate inicio, LocalDate fin, String motivo)
-            throws PermisoNoConcedidoException {
     }
 
     @Override
