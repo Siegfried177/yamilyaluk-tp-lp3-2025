@@ -1,12 +1,19 @@
 package py.edu.uc.lp32025.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import py.edu.uc.lp32025.domain.EmpleadoTiempoCompleto;
+import py.edu.uc.lp32025.domain.Persona;
+import py.edu.uc.lp32025.dto.ImpuestoDetalleDto;
+import py.edu.uc.lp32025.exception.RecursoNoEncontradoException;
+import py.edu.uc.lp32025.mapper.ImpuestoDetalleMapper;
 import py.edu.uc.lp32025.repository.EmpleadoTiempoCompletoRepository;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.HttpStatus;
+import py.edu.uc.lp32025.repository.PersonaRepository;
+
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -14,12 +21,17 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 public class EmpleadoTiempoCompletoService {
+    @Autowired
+    private PersonaRepository personaRepository;
 
-    private final EmpleadoTiempoCompletoRepository repository;
-
+    @Autowired
+    private EmpleadoTiempoCompletoRepository repository;
     public EmpleadoTiempoCompletoService(EmpleadoTiempoCompletoRepository repository) {
         this.repository = repository;
     }
+
+    @Autowired
+    private ImpuestoDetalleMapper impuestoDetalleMapper;
 
     // ------------------------
     // MÉTODOS CRUD
@@ -111,6 +123,27 @@ public class EmpleadoTiempoCompletoService {
                     log.error("Empleado no encontrado con ID: {}", id);
                     return new IllegalArgumentException("Empleado no encontrado con id: " + id);
                 });
+    }
+
+    /**
+     * MODIFICADO: Delega la construcción del DTO al nuevo ImpuestoDetalleMapper.
+     */
+    public ImpuestoDetalleDto consultarDetalleImpuesto(Long id) {
+        Persona entity = personaRepository.findById(id)
+                .orElseThrow(() ->
+                        new RecursoNoEncontradoException(
+                                "No se encontró una Persona con ID " + id
+                        )
+                );
+
+        if (!(entity instanceof EmpleadoTiempoCompleto empleado)) {
+            throw new RecursoNoEncontradoException(
+                    "El ID " + id + " no corresponde a un Empleado de Tiempo Completo."
+            );
+        }
+
+        // ⬅️ Llamada vía instancia inyectada
+        return impuestoDetalleMapper.toDto(empleado);
     }
 
     // ------------------------

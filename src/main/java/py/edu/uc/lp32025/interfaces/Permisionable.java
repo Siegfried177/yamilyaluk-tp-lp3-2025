@@ -1,5 +1,6 @@
 package py.edu.uc.lp32025.interfaces;
 
+import py.edu.uc.lp32025.exception.DiasInsuficientesException;
 import py.edu.uc.lp32025.exception.PermisoNoConcedidoException;
 import java.time.LocalDate;
 
@@ -15,7 +16,7 @@ public interface Permisionable {
      * @throws PermisoNoConcedidoException Si el solicitante no cumple con los requisitos legales (antigüedad, días disponibles).
      */
     void solicitarVacaciones(Long empleadoId, LocalDate fechaInicio, LocalDate fechaFin)
-            throws PermisoNoConcedidoException;
+            throws PermisoNoConcedidoException, DiasInsuficientesException;
 
     /**
      * Solicita un permiso especial o licencia justificada (ej: matrimonio, duelo).

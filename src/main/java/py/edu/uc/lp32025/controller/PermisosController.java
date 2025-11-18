@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import py.edu.uc.lp32025.dto.SolicitudPermisoRequest;
+import py.edu.uc.lp32025.exception.DiasInsuficientesException;
 import py.edu.uc.lp32025.exception.PermisoNoConcedidoException;
 import py.edu.uc.lp32025.service.PermisosService;
 import jakarta.validation.Valid;
@@ -42,6 +43,8 @@ public class PermisosController {
             log.warn("Solicitud rechazada para Empleado ID {}: {}", empleadoId, e.getMessage());
             // Usamos 400 Bad Request para indicar un fallo de negocio en la solicitud.
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (DiasInsuficientesException e) {
+            throw new RuntimeException(e);
         }
     }
 

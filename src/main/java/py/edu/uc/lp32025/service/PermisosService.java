@@ -3,6 +3,7 @@ package py.edu.uc.lp32025.service;
 import lombok.extern.slf4j.Slf4j; // ⬅️ Inyección del Logger con Lombok
 import org.springframework.stereotype.Service;
 import py.edu.uc.lp32025.domain.Empleado;
+import py.edu.uc.lp32025.exception.DiasInsuficientesException;
 import py.edu.uc.lp32025.exception.PermisoNoConcedidoException;
 import py.edu.uc.lp32025.exception.RecursoNoEncontradoException;
 import py.edu.uc.lp32025.repository.PersonaRepository;
@@ -20,7 +21,7 @@ public class PermisosService {
     }
 
     // --- Lógica de Vacaciones ---
-    public void procesarSolicitudVacaciones(Long empleadoId, LocalDate inicio, LocalDate fin) {
+    public void procesarSolicitudVacaciones(Long empleadoId, LocalDate inicio, LocalDate fin) throws DiasInsuficientesException {
 
         Empleado empleado = findEmpleadoById(empleadoId);
         long diasSolicitados = ChronoUnit.DAYS.between(inicio, fin.plusDays(1));
