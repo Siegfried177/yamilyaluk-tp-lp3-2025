@@ -1,0 +1,448 @@
+type: collection.insomnia.rest/5.0
+name: LP3
+meta:
+  id: wrk_4122bc4ffe3b4c498456da67633409db
+  created: 1758035585818
+  modified: 1758046737661
+  description: ""
+collection:
+  - url: http://localhost:8080/api/empleados-tiempo-completo
+    name: Listar todos los empleados tiempo completo
+    meta:
+      id: req_e249c0ea50c745669b0309a279689c02
+      created: 1761519818030
+      modified: 1763504080058
+      isPrivate: false
+      description: ""
+      sortKey: -1761519818030
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/11.6.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/api/empleados-tiempo-completo/batch
+    name: Crear Batch
+    meta:
+      id: req_4f346346783848dabb3130901058fb6a
+      created: 1761581128459
+      modified: 1763500486217
+      isPrivate: false
+      description: ""
+      sortKey: -1761581128459
+    method: POST
+    body:
+      mimeType: application/json
+      text: >
+        [
+            {"nombre":"Juan","apellido":"Perez","salarioMensual":31111000,"departamento":"IT","numeroDocumento":21111112},
+            {"nombre":"Ana","apellido":"Lopez","salarioMensual":250111110,"departamento":"RRHH","numeroDocumento":22}
+        ]
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.6.2
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/api/personas/nomina
+    name: Nomina
+    meta:
+      id: req_e3bf635934fa451f81d98c0e3bc5aee7
+      created: 1761581779359
+      modified: 1761602076059
+      isPrivate: false
+      description: ""
+      sortKey: -1761581779359
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/11.6.2
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/api/personas?nombre=Javier
+    name: Buscar por nombre
+    meta:
+      id: req_7594b93362a74790a4904f2f471fb713
+      created: 1761591003382
+      modified: 1763508479881
+      isPrivate: false
+      description: ""
+      sortKey: -1761591003382
+    method: GET
+    body:
+      mimeType: application/json
+      text: ""
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.6.2
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/api/personas/55
+    name: Buscar por ID
+    meta:
+      id: req_6a6ae1dbcd314c15b4f107af7a88ec3e
+      created: 1761601964984
+      modified: 1763504116968
+      isPrivate: false
+      description: ""
+      sortKey: -1761601964984
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/11.6.2
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/api/personas/reporte/polimorfismo
+    name: Reporte Polimorfismo
+    meta:
+      id: req_28cf2b7ff19b4c05aa9fdaa11148482a
+      created: 1761602911141
+      modified: 1763508562716
+      isPrivate: false
+      description: ""
+      sortKey: -1761602911141
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/11.6.2
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/api/nomina
+    name: Crear Gerente
+    meta:
+      id: req_6864e57b0f6a46c3ab06bb636ded6ae8
+      created: 1763504012958
+      modified: 1763509060208
+      isPrivate: false
+      description: ""
+      sortKey: -1763508780846.5
+    method: POST
+    body:
+      mimeType: application/json
+      text: '{		 "tipoEmpleado": "GERENTE",		 "nombre": "Javier",		 "apellido":
+        "Rios",		 "numeroDocumento": "8877665",		 "fechaNacimiento":
+        "1985-06-20",		 "fechaContratacion":
+        "2020-01-01",		 "areaResponsabilidad": "Marketing",		 "añosAntiguedad":
+        444,		 "posicionGPS": {"latitud": -25.3000, "longitud": -57.6000}		 }'
+    headers:
+      - name: Content-Type
+        value: application/json
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/api/nomina/completa
+    name: Listar Todos
+    meta:
+      id: req_aa3199080b0046739bf793ddd080c453
+      created: 1763504149493
+      modified: 1763508425274
+      isPrivate: false
+      description: ""
+      sortKey: -1763504149493
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/12.0.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/api/nomina/65
+    name: Get ByID
+    meta:
+      id: req_0dfc8ea3017a4c27a165fb4bc126e18c
+      created: 1763504275217
+      modified: 1763509284896
+      isPrivate: false
+      description: ""
+      sortKey: -1763504275217
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/12.0.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/api/nomina/55
+    name: DELETE ByID
+    meta:
+      id: req_5ad346a4e1be4a4095821c4a5fb1da2a
+      created: 1763507419694
+      modified: 1763508072314
+      isPrivate: false
+      description: ""
+      sortKey: -1763507419694
+    method: DELETE
+    headers:
+      - name: User-Agent
+        value: insomnia/12.0.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/api/nomina/57
+    name: UPDATE ByID
+    meta:
+      id: req_3a8bec56ae22462b88d6333b21787c88
+      created: 1763508391046
+      modified: 1763508448531
+      isPrivate: false
+      description: ""
+      sortKey: -1763508391046
+    method: PUT
+    body:
+      mimeType: application/json
+      text: '{     "tipoEmpleado": "GERENTE",      "nombre":
+        "Javisssser",     "apellido": "Rios",     "numeroDocumento":
+        "8877665",      "fechaNacimiento":
+        "1985-06-20",      "fechaContratacion":
+        "2020-01-01",      "areaResponsabilidad": "MARKETING Y
+        PUBLICIDAD",     "añosAntiguedad": 5,      "posicionGPS": {"latitud":
+        -25.4500, "longitud": -57.7000} }'
+    headers:
+      - name: Content-Type
+        value: application/json
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/api/nomina/solicitarVacaciones
+    name: Solicitar Vacaciones
+    meta:
+      id: req_1c378aa1bd614135a1db41d905901284
+      created: 1763508669569
+      modified: 1763509358077
+      isPrivate: false
+      description: ""
+      sortKey: -1763508669569
+    method: POST
+    body:
+      mimeType: application/json
+      text: '{     "empleadoId": 66,     "fechaInicio": "2022-03-01",     "fechaFin":
+        "2022-03-24" }'
+    headers:
+      - name: Content-Type
+        value: application/json
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/api/nomina
+    name: Crear Empleado por Hora
+    meta:
+      id: req_0390923c85fa49a8a98857547ddd2c0c
+      created: 1763508892124
+      modified: 1763508908392
+      isPrivate: false
+      description: ""
+      sortKey: -1763508892124
+    method: POST
+    body:
+      text: "{\r     \"tipoEmpleado\": \"EMPLEADO_POR_HORA\",\r     \"nombre\":
+        \"Marta\", \r     \"apellido\": \"Vera\", \r     \"numeroDocumento\":
+        \"7778889\", \r     \"fechaNacimiento\": \"2000-10-10\",
+        \r     \"fechaContratacion\": \"2024-05-01\", \r     \"posicionGPS\":
+        {\"latitud\": -25.1000, \"longitud\":
+        -57.4000},\r     \r     \"tarifaPorHora\": 50000.00,
+        \r     \"horasTrabajadas\": 45\r }"
+      mimeType: application/json
+    headers:
+      - name: Content-Type
+        value: application/json
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/api/nomina
+    name: Crear Empleado Tiempo Completo
+    meta:
+      id: req_3ad58b2ef8954f71843ca09e208eb064
+      created: 1763508915519
+      modified: 1763508925131
+      isPrivate: false
+      description: ""
+      sortKey: -1763508915519
+    method: POST
+    body:
+      text: "{\r     \"tipoEmpleado\": \"EMPLEADO_TIEMPO_COMPLETO\",\r     \"nombre\":
+        \"Ana\", \r     \"apellido\": \"Gomez\", \r     \"numeroDocumento\":
+        \"1112223\", \r     \"fechaNacimiento\": \"1995-01-01\",
+        \r     \"fechaContratacion\": \"2023-05-10\", \r     \"posicionGPS\":
+        {\"latitud\": -25.2000, \"longitud\":
+        -57.5000},\r     \r     \"salarioMensual\": 5000000.00,
+        \r     \"departamento\": \"FINANZAS\"\r }"
+      mimeType: application/json
+    headers:
+      - name: Content-Type
+        value: application/json
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/api/nomina
+    name: Crear Contratista
+    meta:
+      id: req_07ecc5b7785347949b1762f59cf23b24
+      created: 1763508938581
+      modified: 1763508945745
+      isPrivate: false
+      description: ""
+      sortKey: -1763508938581
+    method: POST
+    body:
+      text: "{\r     \"tipoEmpleado\": \"CONTRATISTA\",\r     \"nombre\": \"Pedro\",
+        \r     \"apellido\": \"Rojas\", \r     \"numeroDocumento\": \"4445556\",
+        \r     \"fechaNacimiento\": \"1988-03-01\",
+        \r     \"fechaContratacion\": \"2024-01-01\", \r     \"posicionGPS\":
+        {\"latitud\": -25.4000, \"longitud\":
+        -57.6500},\r     \r     \"montoPorProyecto\": 2500000.00,
+        \r     \"proyectosCompletados\": 2, \r     \"fechaFinContrato\":
+        \"2026-06-30\" \r }"
+      mimeType: application/json
+    headers:
+      - name: Content-Type
+        value: application/json
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/api/nomina/solicitarVacaciones
+    name: Solicitar Vacaciones
+    meta:
+      id: req_5ab286e837b04f80b982f1707cdd6ec0
+      created: 1763509407716
+      modified: 1763509407716
+      isPrivate: false
+      description: ""
+      sortKey: -1763508530307.5
+    method: POST
+    body:
+      mimeType: application/json
+      text: '{     "empleadoId": 66,     "fechaInicio": "2022-03-01",     "fechaFin":
+        "2022-03-24" }'
+    headers:
+      - name: Content-Type
+        value: application/json
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/api/nomina/solicitarVacaciones
+    name: Solicitar Vacaciones -- Excepcion +25 Dias
+    meta:
+      id: req_eee8c6fcd564486cb780543ae2ef3881
+      created: 1763509437894
+      modified: 1763509440715
+      isPrivate: false
+      description: ""
+      sortKey: -1763508460676.75
+    method: POST
+    body:
+      mimeType: application/json
+      text: '{     "empleadoId": 66,     "fechaInicio": "2022-03-01",     "fechaFin":
+        "2022-03-30" }'
+    headers:
+      - name: Content-Type
+        value: application/json
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_7bb9a1199c909f8f36cae68cd86ed70aa592aa96
+    created: 1758035585822
+    modified: 1758035585822
+environments:
+  name: Base Environment
+  meta:
+    id: env_7bb9a1199c909f8f36cae68cd86ed70aa592aa96
+    created: 1758035585820
+    modified: 1758035585820
+    isPrivate: false
